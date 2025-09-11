@@ -5,6 +5,21 @@ import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+interface MovieInfoProps {
+    label: string,
+    value?: string | number | null
+}
+const MovieInfo = ({ label, value }: MovieInfoProps) => (
+    <View className='flex-col items-start justify-center mt-5'>
+        <Text className='text-light-200 font-normal text-sm'>
+            {label}
+        </Text>
+        <Text className='text-light-200 font-bold text-sm mt-2'>
+            {value || 'N/A'}
+        </Text>
+    </View>
+)
+
 const MovieDetail = () => {
     const { id } = useLocalSearchParams();
     const { data: movie, loading } = useFetch(() => fetchMovieDetail(id as string))
@@ -29,6 +44,15 @@ const MovieDetail = () => {
                         <Text className='text-white font-bold text-sm'>{Math.round(movie?.vote_average ?? 0)}/10</Text>
                         <Text className='text-light-200 text-sm'>{movie?.vote_count} votes</Text>
                     </View>
+
+                    <MovieInfo label='Overview' value={movie?.overview} />
+                    <MovieInfo label='Genres' value={movie?.genres?.map((g) => g.name).join(' - ') || 'N/A'} />
+
+                    <View className='flex flex-row justify-between w-1/2'>
+                        <MovieInfo label='budget' value={`$${movie?.budget / 1_000_000} million`} />
+                        <MovieInfo label='revenue' value={`$${Math.round(movie?.revenue) / 1_000_000}`} />
+                    </View>
+                    <MovieInfo label='Production Companies' value={movie?.production_companies.map((c) => c.name).join(' - ') || 'N/A'} />
                 </View>
             </ScrollView>
         </View >
