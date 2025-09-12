@@ -1,9 +1,9 @@
 import { icons } from '@/constants/icons';
 import { fetchMovieDetail } from '@/services/api';
 import useFetch from '@/services/useFetch';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface MovieInfoProps {
     label: string,
@@ -55,6 +55,10 @@ const MovieDetail = () => {
                     <MovieInfo label='Production Companies' value={movie?.production_companies.map((c) => c.name).join(' - ') || 'N/A'} />
                 </View>
             </ScrollView>
+            <TouchableOpacity className='absolute bottom-5 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50' onPress={router.back}>
+                <Image source={icons.arrow} className='size-5 mr-1 mt-5 rotate-180' tintColor="#Fff" />
+                <Text className='text-white font-semibold text-base '>Go back</Text>
+            </TouchableOpacity>
         </View >
     )
 }
